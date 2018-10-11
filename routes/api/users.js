@@ -1,8 +1,12 @@
 const express = require('express');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 const router = express.Router();
+
+const keys = require('../../config/keys');
 const User = require('../../models/User');
 
 // Registration
@@ -39,5 +43,46 @@ router.post('/register', (req, res) => {
 		})
 });
 
+// Login
+router.post('/login', (req, res) => {
+	const email = req.body.email;
+	const password = req.body.password;
+
+	User.findOne({ email })
+		.then(user => {
+			// Check user
+			if (!user) {
+				return res.status(400).json({ err: "User or password incorrect." });
+			}
+
+			// Check password
+			bcrypt.compare(password, user.password)
+				.then(isMatch =>{
+					if (isMatch) {
+						// User matched
+						const payload = { id: user.id, name: user.name, avatar: user.avatar }
+						// Sign token
+						jwt.sign(payload, keys.secret, { expiresIn: 3600 }, (err, token) => {
+							res.json({
+								success: true,
+								token: `Bearer ${token}`
+							})
+						});
+					}
+					else {
+						return res.status(400).json({ err: "User or password incorrect." })
+					}
+				})
+		});
+});
+
+// Current user
+router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
+	res.json({
+		id: req.user.id,
+		name: req.user.name,
+		email: req.user.email
+	});
+});
 
 module.exports = router;
