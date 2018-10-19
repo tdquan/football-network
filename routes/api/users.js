@@ -8,13 +8,22 @@ const router = express.Router();
 
 const keys = require('../../config/keys');
 const User = require('../../models/User');
+const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
 
 // Registration
 router.post('/register', (req, res) => {
+	const { errors, isValid } = validateRegisterInput(req.body);
+	// Check validation
+	if (!isValid) {
+		return res.status(400).json(errors);
+	}
+
 	User.findOne({ email: req.body.email })
 		.then(user => {
 			if (user) {
-				return res.status(400).json({ email: "Email alerady exists." })
+				errors.email = "Email alerady exists.";
+				return res.status(400).json(errors);
 			}
 			else {
 				const avatar = gravatar.url(req.body.email, {
@@ -45,6 +54,12 @@ router.post('/register', (req, res) => {
 
 // Login
 router.post('/login', (req, res) => {
+	const { errors, isValid } = validateLoginInput(req.body);
+	// Check validation
+	if (!isValid) {
+		return res.status(400).json(errors);
+	}
+
 	const email = req.body.email;
 	const password = req.body.password;
 
@@ -52,7 +67,8 @@ router.post('/login', (req, res) => {
 		.then(user => {
 			// Check user
 			if (!user) {
-				return res.status(400).json({ err: "User or password incorrect." });
+				errors.err = "User or password incorrect.";
+				return res.status(400).json(errors);
 			}
 
 			// Check password
@@ -70,7 +86,8 @@ router.post('/login', (req, res) => {
 						});
 					}
 					else {
-						return res.status(400).json({ err: "User or password incorrect." })
+						errors.err = "User or password incorrect.";
+						return res.status(400).json(errors);
 					}
 				})
 		});
