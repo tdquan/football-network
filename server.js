@@ -17,9 +17,9 @@ const PORT = process.env.PORT || 3000;
 const db = require('./config/keys').mongoURI;
 
 mongoose
-	.connect(db)
-	.then(() => console.log('Connected to MongoDB.'))
-	.catch(err => console.log(err));
+	.connect(db, { useNewUrlParser: true })
+	.then(() => console.log('\n\x1b[32m%s\n\x1b[0m', '---- *** Connected to MongoDB. *** ----'))
+	.catch(err => console.log('\n\x1b[31m%s\n\x1b[0m', err));
 
 // Passport middleware
 app.use(passport.initialize());
@@ -31,4 +31,4 @@ app.use('/api/users', users);
 app.use('/api/profile', profile);
 app.use('/api/posts', posts);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}...`));
+app.listen(PORT, () => console.log('\n\x1b[32m%s\n\x1b[0m', `---- *** Server running on port ${PORT}... *** ----`));
