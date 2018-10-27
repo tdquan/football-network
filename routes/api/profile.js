@@ -26,6 +26,54 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
 		.catch(err => res.status(404).json(err));
 });
 
+// Get all profiles
+router.get('/all', (req, res) => {
+	const errors = {};
+
+	Profile.find()
+		.populate('user', ['name', 'avatar'])
+		.then(profiles => {
+			if (!profiles) {
+				errors.noprofiles = 'There are no profiles at the moment.';
+				return res.status(404).json(errors);
+			}
+			res.json(profiles);
+		})
+		.catch(err => res.status(404).json({ profiles: 'There are no profiles at the moment.' }));
+});
+
+// Get profile by handle
+router.get('/handle/:handle', (req, res) => {
+	const errors = {};
+
+	Profile.findOne({ handle: req.params.handle })
+		.populate('user', ['name', 'avatar'])
+		.then(profile => {
+			if (!profile) {
+				errors.noprofile = 'Profile not found.';
+				return res.status(404).json(errors);
+			}
+			res.json(profile);
+		})
+		.catch(err => res.status(404).json({ profile: 'Profile not found.' }));
+});
+
+// Get profile by user_id
+router.get('/user/:user_id', (req, res) => {
+	const errors = {};
+
+	Profile.findOne({ user: req.params.user_id })
+		.populate('user', ['name', 'avatar'])
+		.then(profile => {
+			if (!profile) {
+				errors.noprofile = 'Profile not found.';
+				return res.status(404).json(errors);
+			}
+			res.json(profile);
+		})
+		.catch(err => res.status(404).json({ profile: 'Profile not found.' }));
+});
+
 // Create profile
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
 	// Validation
