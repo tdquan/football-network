@@ -24,10 +24,9 @@ router.post('/register', (req, res) => {
 	User.findOne({ email: req.body.email })
 		.then(user => {
 			if (user) {
-				errors.email = "Email alerady exists.";
+				errors.email = "Email already exists.";
 				return res.status(400).json(errors);
-			}
-			else {
+			} else {
 				const avatar = gravatar.url(req.body.email, {
 					s: '200',
 					r: 'r',
@@ -43,7 +42,7 @@ router.post('/register', (req, res) => {
 
 				bcrypt.genSalt(10, (err, salt) => {
 					bcrypt.hash(newUser.password, salt, (err, hash) => {
-						if(err) throw err;
+						if (err) throw err;
 						newUser.password = hash;
 						newUser.save()
 							.then(user => res.json(user))
@@ -75,7 +74,7 @@ router.post('/login', (req, res) => {
 
 			// Check password
 			bcrypt.compare(password, user.password)
-				.then(isMatch =>{
+				.then(isMatch => {
 					if (isMatch) {
 						// User matched
 						const payload = { id: user.id, name: user.name, avatar: user.avatar }
@@ -86,8 +85,7 @@ router.post('/login', (req, res) => {
 								token: `Bearer ${token}`
 							})
 						});
-					}
-					else {
+					} else {
 						errors.err = "User or password incorrect.";
 						return res.status(400).json(errors);
 					}

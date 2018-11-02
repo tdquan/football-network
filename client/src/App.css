@@ -1,3 +1,7 @@
+.main-body.container {
+	min-height: calc(100vh - 200px);
+}
+
 img {
 	width: 100%;
 }
