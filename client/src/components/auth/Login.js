@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 
-import { loginUser } from '../../actions/authActions';
-
 class Login extends Component {
 	constructor() {
 		super();
@@ -12,6 +10,12 @@ class Login extends Component {
 			email: '',
 			password: '',
 			errors: {}
+		}
+	}
+
+	componentDidMount() {
+		if (this.props.auth.isAuthenticated) {
+			this.props.history.push('/dashboard');
 		}
 	}
 
@@ -96,6 +100,6 @@ Login.propTypes = {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 	errors: state.errors
-})
+});
 
-export default connect(mapStateToProps, { loginUser })(Login);
+export default connect(mapStateToProps)(Login);

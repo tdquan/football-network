@@ -68,7 +68,7 @@ router.post('/login', (req, res) => {
 		.then(user => {
 			// Check user
 			if (!user) {
-				errors.err = "User or password incorrect.";
+				errors.email = "User or password incorrect.";
 				return res.status(400).json(errors);
 			}
 
@@ -86,7 +86,7 @@ router.post('/login', (req, res) => {
 							})
 						});
 					} else {
-						errors.err = "User or password incorrect.";
+						errors.email = "User or password incorrect.";
 						return res.status(400).json(errors);
 					}
 				})

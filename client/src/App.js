@@ -17,8 +17,9 @@ import './App.css';
 // Custome libraries
 import store from './store';
 import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser } from './actions/authActions';
+import { setCurrentUser, logoutUser } from './actions/authActions';
 
+// Check if there is stored token for logged in user
 if (localStorage.jwtToken) {
 	// Set token to AuthHeader
 	setAuthToken(localStorage.jwtToken);
@@ -26,6 +27,15 @@ if (localStorage.jwtToken) {
 	const decoded = jwt_decode(localStorage.jwtToken);
 	// Set current user
 	store.dispatch(setCurrentUser(decoded));
+
+	// Check for expired token
+	const currentTime = Date.now() / 1000;
+	if (decoded.exp < currentTime) {
+		// Log out user
+		store.dispatch(logoutUser());
+		// Redirect to login page
+		window.location.href('/login');
+	}
 }
 
 class App extends Component {
