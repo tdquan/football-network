@@ -12,7 +12,11 @@ import Footer from './components/layout/Footer';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
+import ShowProfile from './components/profile/ShowProfile';
 import CreateProfile from './components/profile/CreateProfile';
+import EditProfile from './components/profile/EditProfile';
+import PostIndex from './components/post/PostIndex';
+import NotFound from './components/errors/NotFound';
 
 // CSS
 import './App.css';
@@ -47,25 +51,33 @@ if (localStorage.jwtToken) {
 class App extends Component {
 	render() {
 		return (
-			<Provider store={ store }>
+			<Provider store={store}>
 				<Router>
 					<div className="App">
-		        <Navbar />
-		        <Route exact path='/' component={ Landing } />
-		        <div className="main-body container">
-		        	<Route exact path='/register' component={ Register } />
-		        	<Route exact path='/login' component={ Login } />
-		        	<Switch>
-		        		<PrivateRoute exact path='/dashboard' component={ Dashboard } />
-		        	</Switch>
-		        	<Switch>
-		        		<PrivateRoute exact path='/create-profile' component={ CreateProfile } />
-		        	</Switch>
-		        </div>
-		        <Footer />
-		      </div>
-	      </Router>
-      </Provider>
+						<Navbar />
+						<Route exact path="/" component={Landing} />
+						<div className="main-body container">
+							<Route exact path="/register" component={Register} />
+							<Route exact path="/login" component={Login} />
+							<Route exact path="/profile/:handle" component={ShowProfile} />
+							<Switch>
+								<PrivateRoute exact path="/dashboard" component={Dashboard} />
+							</Switch>
+							<Switch>
+								<PrivateRoute exact path="/create-profile" component={CreateProfile} />
+							</Switch>
+							<Switch>
+								<PrivateRoute exact path="/edit-profile" component={EditProfile} />
+							</Switch>
+							<Switch>
+								<PrivateRoute exact path="/feed" component={PostIndex} />
+							</Switch>
+							<Route exact path="/not-found" component={NotFound} />
+						</div>
+						<Footer />
+					</div>
+				</Router>
+			</Provider>
 		);
 	}
 }
