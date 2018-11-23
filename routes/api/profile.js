@@ -113,7 +113,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 				// Check if handle exists
 				Profile.findOne({ handle: profileFields.handle }).then(profile => {
 					if (profile) {
-						errors.handle = "Handle already exists.";
+						errors.handle = 'Handle already exists.';
 						res.status(400).json(errors);
 					}
 					// Save profile if does not exist
@@ -126,11 +126,9 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 
 // Delete user and profile
 router.delete('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-	Profile.findOneAndRemove({ user: req.user.id })
-		.then(() => {
-			User.findOneAndRemove({ _id: req.user.id })
-				.then(() => res.json({ success: true }));
-		});
+	Profile.findOneAndRemove({ user: req.user.id }).then(() => {
+		User.findOneAndRemove({ _id: req.user.id }).then(() => res.json({ success: true }));
+	});
 });
 
 module.exports = router;
