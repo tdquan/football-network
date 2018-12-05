@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import TextAreaGroup from '../common/TextAreaGroup';
-import { addPost } from '../../actions/postActions';
+import { addComment } from '../../actions/postActions';
 
-class CreatePost extends Component {
+class CommentNew extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -25,14 +25,15 @@ class CreatePost extends Component {
 		event.preventDefault();
 
 		const { user } = this.props.auth;
+		const { postId } = this.props;
 
-		const newPost = {
+		const newComment = {
 			text: this.state.text,
 			name: user.name,
 			avatar: user.avatar
 		};
 
-		this.props.addPost(newPost);
+		this.props.addComment(postId, newComment);
 		this.setState({ text: '' });
 	}
 
@@ -48,12 +49,12 @@ class CreatePost extends Component {
 		return (
 			<div className="post-form mb-3">
 				<div className="card card-info">
-					<div className="card-header bg-info text-white">Say something...</div>
+					<div className="card-header bg-info text-white">Make a comment...</div>
 					<div className="card-body">
 						<form onSubmit={this.onSubmit}>
 							<div className="form-body">
 								<TextAreaGroup
-									placeholder="Create a post"
+									placeholder="Reply to post"
 									name="text"
 									value={this.state.text}
 									onChange={this.onChange}
@@ -69,8 +70,9 @@ class CreatePost extends Component {
 	}
 }
 
-CreatePost.propTypes = {
-	addPost: PropTypes.func.isRequired,
+CommentNew.propTypes = {
+	addComment: PropTypes.func.isRequired,
+	postId: PropTypes.string.isRequired,
 	auth: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired
 };
@@ -82,6 +84,6 @@ const mapStateToProps = state => ({
 
 export default connect(
 	mapStateToProps,
-	{ addPost }
+	{ addComment }
 	// Implement map dispatch to props
-)(CreatePost);
+)(CommentNew);

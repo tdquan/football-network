@@ -16,6 +16,7 @@ import ShowProfile from './components/profile/ShowProfile';
 import CreateProfile from './components/profile/CreateProfile';
 import EditProfile from './components/profile/EditProfile';
 import PostIndex from './components/post/PostIndex';
+import PostShow from './components/post/PostShow';
 import NotFound from './components/errors/NotFound';
 
 // CSS
@@ -71,6 +72,9 @@ class App extends Component {
 							</Switch>
 							<Switch>
 								<PrivateRoute exact path="/feed" component={PostIndex} />
+							</Switch>
+							<Switch>
+								<PrivateRoute exact path="/posts/:id" component={PostShow} />
 							</Switch>
 							<Route exact path="/not-found" component={NotFound} />
 						</div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import CreatePost from './CreatePost';
+import PostNew from './PostNew';
 import PostFeed from './PostFeed';
 import Spinner from '../common/Spinner';
 import { getPosts } from '../../actions/postActions';
@@ -27,7 +27,7 @@ class PostIndex extends Component {
 				<div className="container">
 					<div className="row">
 						<div className="col-md-12">
-							<CreatePost />
+							<PostNew />
 							{postContent}
 						</div>
 					</div>
