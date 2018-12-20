@@ -13,6 +13,7 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import ShowProfile from './components/profile/ShowProfile';
+import CurrentProfile from './components/profile/CurrentProfile';
 import CreateProfile from './components/profile/CreateProfile';
 import EditProfile from './components/profile/EditProfile';
 import PostIndex from './components/post/PostIndex';
@@ -69,6 +70,9 @@ class App extends Component {
 							</Switch>
 							<Switch>
 								<PrivateRoute exact path="/edit-profile" component={EditProfile} />
+							</Switch>
+							<Switch>
+								<PrivateRoute exact path="/profile" component={CurrentProfile} />
 							</Switch>
 							<Switch>
 								<PrivateRoute exact path="/feed" component={PostIndex} />
